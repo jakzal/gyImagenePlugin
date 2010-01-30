@@ -1,0 +1,5 @@
+gyImagenePlugin
+===============
+
+The `gyImagenePlugin` is a symfony plugin that provides image manipulation features with GET requests.
+
