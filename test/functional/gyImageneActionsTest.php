@@ -14,13 +14,8 @@ include(dirname(__FILE__) . '/../../../../test/bootstrap/functional.php');
  * @subpackage  test.functional
  * @author      Jakub Zalas <jakub@zalas.pl>
  */
-class gyImageneActionsTest extends gyImageneFunctionalTest
+class gyImageneActionsTest extends gyTestFunctionalImagene
 {
-  public function __construct()
-  {
-    parent::__construct();
-  }
-
   public function testFileExtensionIsRequired()
   {
     $this->info('File extension is required')->get('/imagene/default')->with('response')->isStatusCode(404);
@@ -35,19 +30,11 @@ class gyImageneActionsTest extends gyImageneFunctionalTest
   {
     $this->
       get('/imagene/default.png')->
-
-      with('request')->begin()->
-        isParameter('module', 'gyImagene')->
-        isParameter('action', 'show')->
-      end()->
-
-      with('response')->begin()->
-        isStatusCode(200)->
-      end()
+      isModuleAndAction('gyImagene', 'show', 200)
     ;
   }
 }
 
-$test = new gyImageneActionsTest();
+$test = new gyImageneActionsTest(new sfBrowser());
 $test->run();
 

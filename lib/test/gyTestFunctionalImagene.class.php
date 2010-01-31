@@ -12,19 +12,24 @@
  * @subpackage  lib.test
  * @author      Jakub Zalas <jakub@zalas.pl>
  */
-class gyImageneFunctionalTest
+class gyTestFunctionalImagene extends sfTestFunctional
 {
   /**
-   * @var sfTestFunctional
+   * @param string $module 
+   * @param string $action 
+   * @param integer $statusCode 
+   * @return gyTestFunctionalImagene
    */
-  private $test = null;
-
-  /**
-   * @return null
-   */
-  public function __construct()
+  public function isModuleAndAction($module, $action, $statusCode = 200)
   {
-    $this->test = new sfTestFunctional(new sfBrowser());
+    $this->with('request')->begin()->
+      isParameter('module', $module)->
+      isParameter('action', $action)->
+    end()->
+
+    with('response')->isStatusCode($statusCode);
+
+    return $this;
   }
 
   /**
@@ -81,16 +86,5 @@ class gyImageneFunctionalTest
   protected function tearDown()
   {
   }
-
-  /**
-   * @param string $method 
-   * @param array $arguments 
-   * @return mixed
-   */
-  public function __call($method, $arguments)
-  {
-    return call_user_func_array(array($this->test, $method), $arguments);
-  }
-
 }
 

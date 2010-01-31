@@ -21,6 +21,5 @@ class BasegyImageneActions extends sfActions
   {
     return sfView::NONE;
   }
-
 }
 
