@@ -26,11 +26,10 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     $this->info('File name is required')->get('/imagene')->with('response')->isStatusCode(404);
   }
 
-  public function testModule()
+  public function testResponseIsAnImage()
   {
     $this->
-      get('/imagene/default.png')->
-      isModuleAndAction('gyImagene', 'show', 200)
+      getAndCheck('gyImagene', 'show', '/imagene/default.png', 200)
     ;
   }
 }

@@ -15,24 +15,6 @@
 class gyTestFunctionalImagene extends sfTestFunctional
 {
   /**
-   * @param string $module 
-   * @param string $action 
-   * @param integer $statusCode 
-   * @return gyTestFunctionalImagene
-   */
-  public function isModuleAndAction($module, $action, $statusCode = 200)
-  {
-    $this->with('request')->begin()->
-      isParameter('module', $module)->
-      isParameter('action', $action)->
-    end()->
-
-    with('response')->isStatusCode($statusCode);
-
-    return $this;
-  }
-
-  /**
    * Runs all test methods
    * 
    * @return null
