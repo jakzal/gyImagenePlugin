@@ -15,6 +15,43 @@
 class gyTestFunctionalImagene extends sfTestFunctional
 {
   /**
+   * @param sfBrowserBase $browser 
+   * @param lime_test $lime 
+   * @param array $testers 
+   * @return null
+   */
+  public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+  {
+    parent::__construct($browser, $lime, $testers);
+
+    $this->configure();
+  }
+
+  /**
+   * @return null
+   */
+  public function configure()
+  {
+    $filesDir = sfConfig::get('sf_plugins_dir') 
+      . DIRECTORY_SEPARATOR . 'gyImagenePlugin' 
+      . DIRECTORY_SEPARATOR . 'test' 
+      . DIRECTORY_SEPARATOR . 'images';
+
+    sfConfig::set('app_gy_imagene_plugin_files_dir', $filesDir);
+  }
+
+  /**
+   * @param string $type 
+   * @return gyTestFunctionalImagene
+   */
+  public function isContentType($type)
+  {
+    $this->with('response')->isHeader('Content-Type', $type);
+
+    return $this;
+  }
+
+  /**
    * Runs all test methods
    * 
    * @return null
@@ -24,6 +61,8 @@ class gyTestFunctionalImagene extends sfTestFunctional
     foreach ($this->getTestMethods() as $method)
     {
       $test = $method->getName();
+
+      $this->info(sfInflector::humanize(sfInflector::underscore(substr($test, 4))));
       $this->setUp();
       $this->$test();
       $this->tearDown();

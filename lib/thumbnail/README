@@ -1,0 +1,1 @@
+Thumbnail classes are taken from sfThumbnailPlugin and sfThumbnailCachePlugin. Small improvements were made so original plugins couldn't be used. It might be that these classes will be replaced in future releases.

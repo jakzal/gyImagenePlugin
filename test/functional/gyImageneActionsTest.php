@@ -18,19 +18,33 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
 {
   public function testFileExtensionIsRequired()
   {
-    $this->info('File extension is required')->get('/imagene/default')->with('response')->isStatusCode(404);
+    $this->get('/imagene/logo-goyello')->with('response')->isStatusCode(404);
   }
 
   public function testFileNameIsRequired()
   {
-    $this->info('File name is required')->get('/imagene')->with('response')->isStatusCode(404);
+    $this->get('/imagene')->with('response')->isStatusCode(404);
   }
 
-  public function testResponseIsAnImage()
+  public function testRequestingPngFileReturnsPngFile()
   {
     $this->
-      getAndCheck('gyImagene', 'show', '/imagene/default.png', 200)
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello.png', 200)->
+      isContentType('image/png')
     ;
+  }
+
+  public function testRequestingJpgFileReturnsJpgFile()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello.jpg', 200)->
+      isContentType('image/jpg')
+    ;
+  }
+
+  public function testImageHasToExist()
+  {
+    $this->getAndCheck('gyImagene', 'show', '/imagene/non-existing.png', 404);
   }
 }
 
