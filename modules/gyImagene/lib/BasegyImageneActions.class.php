@@ -17,9 +17,10 @@ class BasegyImageneActions extends sfActions
  /**
   * @param sfWebRequest $request
   */
-  public function executeIndex(sfWebRequest $request)
+  public function executeShow(sfWebRequest $request)
   {
-    $this->forward('default', 'module');
+    return sfView::NONE;
   }
+
 }
 

@@ -17,14 +17,14 @@ class gyImageneFunctionalTest
   /**
    * @var sfTestFunctional
    */
-  protected $browser = null;
+  private $test = null;
 
   /**
    * @return null
    */
   public function __construct()
   {
-    $this->browser = new sfTestFunctional(new sfBrowser());
+    $this->test = new sfTestFunctional(new sfBrowser());
   }
 
   /**
@@ -81,5 +81,16 @@ class gyImageneFunctionalTest
   protected function tearDown()
   {
   }
+
+  /**
+   * @param string $method 
+   * @param array $arguments 
+   * @return mixed
+   */
+  public function __call($method, $arguments)
+  {
+    return call_user_func_array(array($this->test, $method), $arguments);
+  }
+
 }
 
