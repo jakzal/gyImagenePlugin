@@ -29,7 +29,7 @@ class gyImageneFileRouteTest extends gyLimeTest
     $route = new gyImageneFileRoute('/imagene/:file_name', array(), array());
 
     $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80.png', 'sf_method' => 'GET')), '->matchesParameters() matches when file name is used alone');
-    $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80.png', 'sf_method' => 'GET')), '->matchesParameters() removes parameters from file name');
+    $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80(w:20)(h:30).png', 'sf_method' => 'GET')), '->matchesParameters() removes parameters from file name');
   }
 
   public function testMatchesUrl()
