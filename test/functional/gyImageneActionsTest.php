@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-include(dirname(__FILE__) . '/../../../../test/bootstrap/functional.php');
+include(dirname(__FILE__) . '/../bootstrap/functional.php');
 
 /**
  * @package     gyImagenePlugin

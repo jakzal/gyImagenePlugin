@@ -127,7 +127,7 @@ class gyTestFunctionalImagene extends sfTestFunctional
 
     foreach ($methods as $method)
     {
-      if (0 === strpos($method->getName(), 'test') && 0 === $method->getNumberOfParameters())
+      if (0 === strpos($method->getName(), 'test') && 0 === $method->getNumberOfParameters() && strlen($method->getName()) > 4)
       {
         $testMethods[] = $method;
       }
