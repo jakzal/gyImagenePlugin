@@ -52,6 +52,48 @@ class gyTestFunctionalImagene extends sfTestFunctional
   }
 
   /**
+   * @param integer $width 
+   * @return gyTestFunctionalImagene
+   */
+  public function imageHasWidth($width)
+  {
+    $filePath = $this->saveResponseContent();
+
+    list($imageWidth, $imageHeight) = getimagesize($filePath);
+
+    $this->test()->cmp_ok($imageWidth, '===', $width, sprintf('Image width is "%s"', $width));
+
+    return $this;
+  }
+
+  /**
+   * @param integer $height
+   * @return gyTestFunctionalImagene
+   */
+  public function imageHasHeight($height)
+  {
+    $filePath = $this->saveResponseContent();
+
+    list($imageWidth, $imageHeight) = getimagesize($filePath);
+
+    $this->test()->cmp_ok($imageHeight, '===', $height, sprintf('Image height is "%s"', $height));
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  protected function saveResponseContent()
+  {
+    $content  = $this->getResponse()->getContent();
+    $filePath = tempnam(sys_get_temp_dir(), 'imagene');
+    file_put_contents($filePath, $content);
+
+    return $filePath;
+  }
+
+  /**
    * Runs all test methods
    * 
    * @return null

@@ -29,7 +29,7 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
   public function testRequestingPngFileReturnsPngFile()
   {
     $this->
-      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello.png', 200)->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80.png', 200)->
       isContentType('image/png')
     ;
   }
@@ -37,7 +37,7 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
   public function testRequestingJpgFileReturnsJpgFile()
   {
     $this->
-      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello.jpg', 200)->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80.jpg', 200)->
       isContentType('image/jpg')
     ;
   }
@@ -45,6 +45,57 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
   public function testImageHasToExist()
   {
     $this->getAndCheck('gyImagene', 'show', '/imagene/non-existing.png', 404);
+  }
+
+  public function testParametersAreRemovedFromImageName()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:80)(h:80).png', 200)->
+      isContentType('image/png')
+    ;
+  }
+
+  public function testImageIsNotModifiedIfNoParametersArePassed()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80.png', 200)->
+      imageHasWidth(160)->
+      imageHasHeight(80)
+    ;
+  }
+
+  public function testImageIsScaledToGivenWidth()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40).png', 200)->
+      imageHasWidth(40)
+    ;
+  }
+
+  public function testImageIsScaledToGivenHeight()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:40).png', 200)->
+      imageHasHeight(40)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedIfOnlyWidthIsGiven()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedIfOnlyHeightIsGiven()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:40).png', 200)->
+      imageHasWidth(80)->
+      imageHasHeight(40)
+    ;
   }
 }
 

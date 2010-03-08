@@ -24,7 +24,7 @@ class gyImageneRouting
     $routing = $event->getSubject();
     $routing->prependRoute(
       'gy_imagene_show', 
-      new sfRoute(
+      new gyImageneFileRoute(
         '/imagene/:file_name', 
         array('module' => 'gyImagene', 'action' => 'show'),
         array('file_name' => '.*\.(jpg|jpeg|png|gif|JPG|PNG|GIF|JPEG)')

@@ -14,9 +14,9 @@
  */
 class BasegyImageneActions extends sfActions
 {
- /**
-  * @param sfWebRequest $request
-  */
+  /**
+   * @param sfWebRequest $request
+   */
   public function executeShow(sfWebRequest $request)
   {
     try 
@@ -44,9 +44,10 @@ class BasegyImageneActions extends sfActions
   protected function createThumbnailFromRequest(sfWebRequest $request)
   {
     $dir = sfConfig::get('app_gy_imagene_plugin_files_dir', sfConfig::get('sf_upload_dir'));
-    $filePath = realpath($dir . DIRECTORY_SEPARATOR . $request->getParameter('file_name'));
+    $fileName = $this->normalizeFileName($request->getParameter('file_name'));
+    $filePath = realpath($dir . DIRECTORY_SEPARATOR . $fileName);
 
-    $thumbnail = new gyThumbnailCache($filePath);
+    $thumbnail = new gyThumbnailCache($filePath, $request->getParameter('width', null), $request->getParameter('height', null));
 
     return $thumbnail;
   }
@@ -71,6 +72,11 @@ class BasegyImageneActions extends sfActions
     $extension = preg_replace('/^.*\.([^.]+)$/', '$1', $path);
 
     return sprintf('image/%s', $extension);
+  }
+
+  protected function normalizeFileName($fileName)
+  {
+    return preg_replace('/^([^(]+).*(\.[^()]+)$/', '$1$2', $fileName);
   }
 }
 
