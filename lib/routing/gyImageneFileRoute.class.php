@@ -44,6 +44,10 @@ class gyImageneFileRoute extends sfRoute
         {
           $parameters['scale'] = $matches[2][$i] == 1 ? true : false;
         }
+        elseif ('i' == $key)
+        {
+          $parameters['inflate'] = $matches[2][$i] == 1 ? true : false;
+        }
         else
         {
           throw new InvalidArgumentException(sprintf('Invalid formatting paramter: "%s"', $key));

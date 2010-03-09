@@ -51,9 +51,9 @@ class BasegyImageneActions extends sfActions
       $filePath, 
       $request->getParameter('width', null), 
       $request->getParameter('height', null),
-      $request->getParameter('scale', true)/*,
-      true,
-      null, null, null, true, array('method' => 'shave_bottom')*/
+      $request->getParameter('scale', true),
+      $request->getParameter('inflate', true)
+      /*null, null, null, true, array('method' => 'shave_bottom')*/
     );
 
     return $thumbnail;

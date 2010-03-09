@@ -151,6 +151,55 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
       imageHasHeight(25)
     ;
   }
+
+  public function testImageExceedsItsWidthWithoutInflateParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:200).png', 200)->
+      imageHasWidth(200);
+    ;
+  }
+ 
+  public function testImageExceedsItsHeightWithoutInflateParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:100).png', 200)->
+      imageHasHeight(100);
+    ;
+  }
+
+  public function testImageDoesNotExceedItsWidthWithInflateParameterOff()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:200)(i:0).png', 200)->
+      imageHasWidth(160);
+    ;
+  }
+ 
+  public function testImageDoesNotExceedItsHeightWithInflateParameterOff()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:100)(i:0).png', 200)->
+      imageHasHeight(80);
+    ;
+  }
+
+  public function testImageExceedsItsWidthWithInflateParameterOn()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:200)(i:1).png', 200)->
+      imageHasWidth(200);
+    ;
+  }
+ 
+  public function testImageExceedsItsHeightWithInflateParameterOn()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:100)(i:1).png', 200)->
+      imageHasHeight(100);
+    ;
+  }
+
 }
 
 $test = new gyImageneActionsTest(new sfBrowser());
