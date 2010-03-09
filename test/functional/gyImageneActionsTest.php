@@ -16,6 +16,16 @@ include(dirname(__FILE__) . '/../bootstrap/functional.php');
  */
 class gyImageneActionsTest extends gyTestFunctionalImagene
 {
+  protected function setUp()
+  {
+    $this->removeAllFilesFromDirectory($this->getCachePath());
+  }
+
+  protected function tearDown()
+  {
+    $this->removeAllFilesFromDirectory($this->getCachePath());
+  }
+
   public function testFileExtensionIsRequired()
   {
     $this->get('/imagene/logo-goyello')->with('response')->isStatusCode(404);
@@ -260,9 +270,32 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     $this->test()->cmp_ok(filemtime($filePath), '===', filemtime($originalFilePath), 'Thumbnail modification time is set the same as modification time of original file');
   }
 
+  /**
+   * @return string
+   */
   protected function getCachePath()
   {
     return sfConfig::get('sf_upload_dir') . DIRECTORY_SEPARATOR . 'gyThumbnailCache' . DIRECTORY_SEPARATOR;
+  }
+
+  /**
+   * @param string $dirPath 
+   * @return null
+   */
+  protected function removeAllFilesFromDirectory($dirPath)
+  {
+    $dir = opendir($dirPath);
+
+    while (false !== ($file = readdir($dir))) 
+    {
+      $filePath = $dirPath . $file;
+      if (is_file($filePath))
+      {
+        unlink ($filePath);
+      }
+    }
+
+    closedir($dir);
   }
 }
 
