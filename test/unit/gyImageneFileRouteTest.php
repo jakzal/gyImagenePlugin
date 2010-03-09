@@ -29,7 +29,8 @@ class gyImageneFileRouteTest extends gyLimeTest
     $route = new gyImageneFileRoute('/imagene/:file_name', array(), array());
 
     $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80.png', 'sf_method' => 'GET')), '->matchesParameters() matches when file name is used alone');
-    $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80(w:20)(h:30).png', 'sf_method' => 'GET')), '->matchesParameters() removes parameters from file name');
+    $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80(w:20)(h:30).png', 'sf_method' => 'GET')), '->matchesParameters() removes parameters from the file name');
+    $this->ok($route->matchesParameters(array('file_name' => 'logo-goyello-160x80(w:20)(h:30)(s:1)(i:1).png', 'sf_method' => 'GET')), '->matchesParameters() removes parameters from the file name');
   }
 
   public function testMatchesUrl()
@@ -40,7 +41,10 @@ class gyImageneFileRouteTest extends gyLimeTest
     $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png'), '->matchesUrl() matches when file name is used alone');
 
     $parameters = $route->matchesUrl('/imagene/logo-goyello-160x80(w:20)(h:30).png', array('sf_method' => 'GET'));
-    $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'width' => 20, 'height' => 30), '->matchesUrl() extracts parameters from file name');
+    $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'width' => 20, 'height' => 30), '->matchesUrl() extracts parameters from the file name');
+
+    $parameters = $route->matchesUrl('/imagene/logo-goyello-160x80(w:20)(h:30)(s:0)(i:1).png', array('sf_method' => 'GET'));
+    $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'width' => 20, 'height' => 30, 'scale' => false, 'inflate' => true), '->matchesUrl() extracts all parameters from the file name');
   }
 
   public function testMatchesUrlThrowsExceptionForInvalidFormatter()
@@ -60,6 +64,6 @@ class gyImageneFileRouteTest extends gyLimeTest
   }
 }
 
-$test = new gyImageneFileRouteTest(7);
+$test = new gyImageneFileRouteTest(9);
 $test->run();
 
