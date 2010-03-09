@@ -204,49 +204,49 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
   {
     $this->get('/imagene/logo-goyello-160x80(w:120).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11_120_.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11_120_.png'), 'Width is included in cached file name');
   }
 
   public function testHeightIsIncludedInCachedFileName()
   {
     $this->get('/imagene/logo-goyello-160x80(h:60).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__60.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__60.png'), 'Height is included in cached file name');
   }
 
   public function testScaleIsIncludedInCachedFileNameWhenItIsOn()
   {
     $this->get('/imagene/logo-goyello-160x80(s:1).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'), 'Scale is included in cached file name');
   }
 
   public function testScaleIsIncludedInCachedFileNameWhenItIsOff()
   {
     $this->get('/imagene/logo-goyello-160x80(s:0).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_01__.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_01__.png'), 'Scale is included in cached file name also when it is off');
   }
 
   public function testInflateIsIncludedInCachedFileNameWhenItIsOn()
   {
     $this->get('/imagene/logo-goyello-160x80(i:1).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'), 'Inflate is included in cached file name');
   }
 
   public function testInflateIsIncludedInCachedFileNameWhenItIsOff()
   {
     $this->get('/imagene/logo-goyello-160x80(i:0).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_10__.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_10__.png'), 'Infalte is included in cached file name also when it is off');
   }
 
   public function testAllParametersAreIncludedInCachedFileName()
   {
     $this->get('/imagene/logo-goyello-160x80(w:120)(h:40)(s:0)(i:0).png');
 
-    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_00_120_40.png'));
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_00_120_40.png'), 'All parameters are included in cached file name');
   }
 
   public function testThumbnailModificationTimeIsTheSameAsOriginalFile()
