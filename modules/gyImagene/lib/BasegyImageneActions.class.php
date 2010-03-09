@@ -61,6 +61,12 @@ class BasegyImageneActions extends sfActions
     return $thumbnail;
   }
 
+  /**
+   * @param string $fileName 
+   * @param string $directory 
+   * @param sfWebRequest $request 
+   * @return string
+   */
   protected function generateThumbnailPath($fileName, $directory, sfWebRequest $request)
   {
     $extension = $this->getFileExtension($fileName);
@@ -91,6 +97,10 @@ class BasegyImageneActions extends sfActions
     $response->setHttpHeader('Pragma', '', false);
   }
 
+  /**
+   * @param string $path 
+   * @return string
+   */
   protected function getMimeTypeByPath($path)
   {
     $extension = ltrim($this->getFileExtension($path), '.');
@@ -98,11 +108,19 @@ class BasegyImageneActions extends sfActions
     return sprintf('image/%s', $extension);
   }
 
+  /**
+   * @param string $fileName 
+   * @return string
+   */
   protected function normalizeFileName($fileName)
   {
     return preg_replace('/^([^(]+).*(\.[^()]+)$/', '$1$2', $fileName);
   }
 
+  /**
+   * @param string $fileName 
+   * @return string
+   */
   protected function getFileExtension($fileName)
   {
     $dotPosition = strrpos($fileName, '.');
@@ -111,6 +129,10 @@ class BasegyImageneActions extends sfActions
     return $extension;
   }
 
+  /**
+   * @param string $fileName 
+   * @return string
+   */
   protected function getFileBaseName($fileName)
   {
     $extension = $this->getFileExtension($fileName);
