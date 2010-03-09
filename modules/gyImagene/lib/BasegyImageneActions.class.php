@@ -54,7 +54,8 @@ class BasegyImageneActions extends sfActions
       $request->getParameter('scale', true),
       $request->getParameter('inflate', true),
       null, 
-      $this->generateThumbnailPath($fileName, DIRECTORY_SEPARATOR, $request)/*, null, true, array('method' => 'shave_bottom')*/
+      $this->generateThumbnailPath($fileName, DIRECTORY_SEPARATOR, $request), 
+      filemtime($filePath)/*, true, array('method' => 'shave_bottom')*/
     );
 
     return $thumbnail;

@@ -249,6 +249,17 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_00_120_40.png'));
   }
 
+  public function testThumbnailModificationTimeIsTheSameAsOriginalFile()
+  {
+    $filesDirectory   = sfConfig::get('app_gy_imagene_plugin_files_dir', '') . DIRECTORY_SEPARATOR;
+    $filePath         = $this->getCachePath() . 'logo-goyello-160x80_11_110_.png';
+    $originalFilePath = $filesDirectory . 'logo-goyello-160x80.png';
+
+    $this->get('/imagene/logo-goyello-160x80(w:110).png');
+
+    $this->test()->cmp_ok(filemtime($filePath), '===', filemtime($originalFilePath), 'Thumbnail modification time is set the same as modification time of original file');
+  }
+
   protected function getCachePath()
   {
     return sfConfig::get('sf_upload_dir') . DIRECTORY_SEPARATOR . 'gyThumbnailCache' . DIRECTORY_SEPARATOR;
