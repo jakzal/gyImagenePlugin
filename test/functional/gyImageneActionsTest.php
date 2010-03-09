@@ -55,7 +55,7 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     ;
   }
 
-  public function testImageIsNotModifiedIfNoParametersArePassed()
+  public function testImageIsNotModifiedIfNoParameterIsPassed()
   {
     $this->
       getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80.png', 200)->
@@ -95,6 +95,60 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
       getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:40).png', 200)->
       imageHasWidth(80)->
       imageHasHeight(40)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedWithWidthAndScaleParameters()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40)(s:1).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedWithWidthAndNoScaleParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40)(s:0).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedWithHeightAndScaleParameters()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:20)(s:1).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedWithHeightAndNoScaleParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:20)(s:0).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsPreservedWithWidthHeightAndScaleParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40)(h:40)(s:1).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(20)
+    ;
+  }
+
+  public function testAspectRatioIsNotPreservedWithWidthHeightAndNoScaleParameter()
+  {
+    $this->
+      getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40)(h:25)(s:0).png', 200)->
+      imageHasWidth(40)->
+      imageHasHeight(25)
     ;
   }
 }

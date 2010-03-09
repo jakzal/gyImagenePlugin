@@ -47,7 +47,14 @@ class BasegyImageneActions extends sfActions
     $fileName = $this->normalizeFileName($request->getParameter('file_name'));
     $filePath = realpath($dir . DIRECTORY_SEPARATOR . $fileName);
 
-    $thumbnail = new gyThumbnailCache($filePath, $request->getParameter('width', null), $request->getParameter('height', null));
+    $thumbnail = new gyThumbnailCache(
+      $filePath, 
+      $request->getParameter('width', null), 
+      $request->getParameter('height', null),
+      $request->getParameter('scale', true)/*,
+      true,
+      null, null, null, true, array('method' => 'shave_bottom')*/
+    );
 
     return $thumbnail;
   }
