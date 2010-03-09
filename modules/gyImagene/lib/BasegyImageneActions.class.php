@@ -52,11 +52,28 @@ class BasegyImageneActions extends sfActions
       $request->getParameter('width', null), 
       $request->getParameter('height', null),
       $request->getParameter('scale', true),
-      $request->getParameter('inflate', true)
-      /*null, null, null, true, array('method' => 'shave_bottom')*/
+      $request->getParameter('inflate', true),
+      null, 
+      $this->generateThumbnailPath($fileName, DIRECTORY_SEPARATOR, $request)/*, null, true, array('method' => 'shave_bottom')*/
     );
 
     return $thumbnail;
+  }
+
+  protected function generateThumbnailPath($fileName, $directory, sfWebRequest $request)
+  {
+    $dotPosition = strrpos($fileName, '.');
+    $extension   = substr($fileName, $dotPosition);
+    $baseName    = substr($fileName, 0, -(strlen($extension)));
+
+    $fileName = sprintf('%s_%s%s%s', 
+      $baseName,
+      (int) $request->getParameter('scale', 1),
+      (int) $request->getParameter('inflate', 1),
+      $extension
+    );
+
+    return $directory . $fileName;
   }
 
   /**

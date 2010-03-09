@@ -107,12 +107,12 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     ;
   }
 
-  public function testAspectRatioIsPreservedWithWidthAndNoScaleParameter()
+  public function testAspectRatioIsNotPreservedWithWidthAndNoScaleParameter()
   {
     $this->
       getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(w:40)(s:0).png', 200)->
       imageHasWidth(40)->
-      imageHasHeight(20)
+      imageHasHeight(80)
     ;
   }
 
@@ -125,11 +125,11 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     ;
   }
 
-  public function testAspectRatioIsPreservedWithHeightAndNoScaleParameter()
+  public function testAspectRatioIsNotPreservedWithHeightAndNoScaleParameter()
   {
     $this->
       getAndCheck('gyImagene', 'show', '/imagene/logo-goyello-160x80(h:20)(s:0).png', 200)->
-      imageHasWidth(40)->
+      imageHasWidth(160)->
       imageHasHeight(20)
     ;
   }
@@ -200,6 +200,59 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     ;
   }
 
+  public function testWidthIsIncludedInCachedFileName()
+  {
+    $this->get('/imagene/logo-goyello-160x80(w:120).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11_120_.png'));
+  }
+
+  public function testHeightIsIncludedInCachedFileName()
+  {
+    $this->get('/imagene/logo-goyello-160x80(h:60).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__60.png'));
+  }
+
+  public function testScaleIsIncludedInCachedFileNameWhenItIsOn()
+  {
+    $this->get('/imagene/logo-goyello-160x80(s:1).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'));
+  }
+
+  public function testScaleIsIncludedInCachedFileNameWhenItIsOff()
+  {
+    $this->get('/imagene/logo-goyello-160x80(s:0).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_01__.png'));
+  }
+
+  public function testInflateIsIncludedInCachedFileNameWhenItIsOn()
+  {
+    $this->get('/imagene/logo-goyello-160x80(i:1).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_11__.png'));
+  }
+
+  public function testInflateIsIncludedInCachedFileNameWhenItIsOff()
+  {
+    $this->get('/imagene/logo-goyello-160x80(i:0).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_10__.png'));
+  }
+
+  public function testAllParametersAreIncludedInCachedFileName()
+  {
+    $this->get('/imagene/logo-goyello-160x80(w:120)(h:40)(s:0)(i:0).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_00_120_40.png'));
+  }
+
+  protected function getCachePath()
+  {
+    return sfConfig::get('sf_upload_dir') . DIRECTORY_SEPARATOR . 'gyThumbnailCache' . DIRECTORY_SEPARATOR;
+  }
 }
 
 $test = new gyImageneActionsTest(new sfBrowser());
