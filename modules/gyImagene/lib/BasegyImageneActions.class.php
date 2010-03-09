@@ -63,9 +63,8 @@ class BasegyImageneActions extends sfActions
 
   protected function generateThumbnailPath($fileName, $directory, sfWebRequest $request)
   {
-    $dotPosition = strrpos($fileName, '.');
-    $extension   = substr($fileName, $dotPosition);
-    $baseName    = substr($fileName, 0, -(strlen($extension)));
+    $extension = $this->getFileExtension($fileName);
+    $baseName  = $this->getFileBaseName($fileName);
 
     $fileName = sprintf('%s_%s%s%s', 
       $baseName,
@@ -94,7 +93,7 @@ class BasegyImageneActions extends sfActions
 
   protected function getMimeTypeByPath($path)
   {
-    $extension = preg_replace('/^.*\.([^.]+)$/', '$1', $path);
+    $extension = ltrim($this->getFileExtension($path), '.');
 
     return sprintf('image/%s', $extension);
   }
@@ -102,6 +101,22 @@ class BasegyImageneActions extends sfActions
   protected function normalizeFileName($fileName)
   {
     return preg_replace('/^([^(]+).*(\.[^()]+)$/', '$1$2', $fileName);
+  }
+
+  protected function getFileExtension($fileName)
+  {
+    $dotPosition = strrpos($fileName, '.');
+    $extension   = substr($fileName, $dotPosition);
+
+    return $extension;
+  }
+
+  protected function getFileBaseName($fileName)
+  {
+    $extension = $this->getFileExtension($fileName);
+    $baseName  = substr($fileName, 0, -(strlen($extension)));
+
+    return $baseName;
   }
 }
 
