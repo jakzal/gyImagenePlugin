@@ -23,43 +23,89 @@ class gyImageneFileRoute extends sfRoute
   public function matchesUrl($url, $context = array())
   {
     $parameters = parent::matchesUrl($url, $context);
+    $matches    = array();
 
-    $matches = array();
     if (preg_match('/^([^(]+)(\(.*\))(\..*?)$/', $parameters['file_name'], $matches))
     {
       $parameters['file_name'] = $matches[1] . $matches[3];
+
       preg_match_all('/\((.*?):(.*?)\)/', $matches[2], $matches);
 
-      foreach ($matches[1] as $i => $key) 
-      {
-        if ('w' == $key)
-        {
-          $parameters['width'] = (int) $matches[2][$i];
-        }
-        elseif ('h' == $key)
-        {
-          $parameters['height'] = (int) $matches[2][$i];
-        }
-        elseif ('s' == $key)
-        {
-          $parameters['scale'] = $matches[2][$i] == 1 ? true : false;
-        }
-        elseif ('i' == $key)
-        {
-          $parameters['inflate'] = $matches[2][$i] == 1 ? true : false;
-        }
-        elseif ('p' == $key)
-        {
-          $parameters['path'] = implode(DIRECTORY_SEPARATOR, explode(',', $matches[2][$i]));
-        }
-        else
-        {
-          throw new InvalidArgumentException(sprintf('Invalid formatting paramter: "%s"', $key));
-        }
-      }
+      $parameters = array_merge($parameters, $this->matchParameters($matches[1], $matches[2]));
     }
 
     return $parameters;
+  }
+
+  /**
+   * @param array $names 
+   * @param array $values 
+   * @return array
+   */
+  private function matchParameters($names, $values)
+  {
+    $parameterMap = array('w' => 'width', 'h' => 'height', 's' => 'scale', 'i' => 'inflate', 'p' => 'path');
+    $parameters   = array();
+
+    foreach ($names as $i => $key) 
+    {
+      if (!array_key_exists($key, $parameterMap))
+      {
+        throw new InvalidArgumentException(sprintf('Invalid formatting paramter: "%s"', $key));
+      }
+
+      $name        = $parameterMap[$key];
+      $cleanMethod = sprintf('clean%s', ucfirst($name));
+
+      $parameters[$name] = $this->$cleanMethod($values[$i]);
+    }
+
+    return $parameters;
+  }
+
+  /**
+   * @param string $width 
+   * @return int
+   */
+  protected function cleanWidth($width)
+  {
+    return (int) $width;
+  }
+
+  /**
+   * @param string $height
+   * @return int
+   */
+  protected function cleanHeight($height)
+  {
+    return (int) $height;
+  }
+
+  /**
+   * @param string $scale 
+   * @return boolean
+   */
+  protected function cleanScale($scale)
+  {
+    return $scale == 1 ? true : false;
+  }
+
+  /**
+   * @param string $inflate 
+   * @return boolean
+   */
+  protected function cleanInflate($inflate)
+  {
+    return $inflate == 1 ? true : false;
+  }
+
+  /**
+   * @param string $path 
+   * @return string
+   */
+  protected function cleanPath($path)
+  {
+    return implode(DIRECTORY_SEPARATOR, explode(',', $path));
   }
 }
 
