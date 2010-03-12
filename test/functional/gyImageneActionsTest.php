@@ -259,6 +259,13 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
     $this->test()->ok(file_exists($this->getCachePath() . 'logo-goyello-160x80_00_120_40.png'), 'All parameters are included in cached file name');
   }
 
+  public function testPathParameterIsAddedToCachedPath()
+  {
+    $this->get('/imagene/logo-goyello-160x80(w:120)(h:40)(s:0)(i:0)(p:logos,companies).png');
+
+    $this->test()->ok(file_exists($this->getCachePath() . 'logos/companies/logo-goyello-160x80_00_120_40.png'), 'Path parameter is included in cached file path');
+  }
+
   public function testThumbnailModificationTimeIsTheSameAsOriginalFile()
   {
     $filesDirectory   = sfConfig::get('app_gy_imagene_plugin_files_dir', '') . DIRECTORY_SEPARATOR;
@@ -292,6 +299,10 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
       if (is_file($filePath))
       {
         unlink ($filePath);
+      }
+      elseif (is_dir($filePath) && !in_array(substr($filePath, -1), array('.', '..')))
+      {
+        $this->removeAllFilesFromDirectory($filePath . DIRECTORY_SEPARATOR);
       }
     }
 

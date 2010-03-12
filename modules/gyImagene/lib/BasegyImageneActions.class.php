@@ -43,9 +43,10 @@ class BasegyImageneActions extends sfActions
    */
   protected function createThumbnailFromRequest(sfWebRequest $request)
   {
-    $dir = sfConfig::get('app_gy_imagene_plugin_files_dir', sfConfig::get('sf_upload_dir'));
-    $fileName = $this->normalizeFileName($request->getParameter('file_name'));
-    $filePath = realpath($dir . DIRECTORY_SEPARATOR . $fileName);
+    $dir          = sfConfig::get('app_gy_imagene_plugin_files_dir', sfConfig::get('sf_upload_dir'));
+    $fileName     = $this->normalizeFileName($request->getParameter('file_name'));
+    $filePath     = realpath($dir . DIRECTORY_SEPARATOR . $fileName);
+    $thumbnailDir = DIRECTORY_SEPARATOR . $request->getParameter('path', '') . DIRECTORY_SEPARATOR;
 
     $thumbnail = new gyThumbnailCache(
       $filePath, 
@@ -54,7 +55,7 @@ class BasegyImageneActions extends sfActions
       $request->getParameter('scale', true),
       $request->getParameter('inflate', true),
       null, 
-      $this->generateThumbnailPath($fileName, DIRECTORY_SEPARATOR, $request), 
+      $this->generateThumbnailPath($fileName, $thumbnailDir, $request), 
       filemtime($filePath)/*, true, array('method' => 'shave_bottom')*/
     );
 
