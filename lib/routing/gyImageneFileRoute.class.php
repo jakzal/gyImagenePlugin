@@ -87,7 +87,7 @@ class gyImageneFileRoute extends sfRoute
    */
   protected function cleanScale($scale)
   {
-    return $scale == 1 ? true : false;
+    return '1' === $scale ? true : false;
   }
 
   /**
@@ -96,7 +96,7 @@ class gyImageneFileRoute extends sfRoute
    */
   protected function cleanInflate($inflate)
   {
-    return $inflate == 1 ? true : false;
+    return '1' === $inflate ? true : false;
   }
 
   /**
