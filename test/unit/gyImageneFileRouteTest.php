@@ -43,8 +43,8 @@ class gyImageneFileRouteTest extends gyLimeTest
     $parameters = $route->matchesUrl('/imagene/logo-goyello-160x80(w:20)(h:30).png', array('sf_method' => 'GET'));
     $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'width' => 20, 'height' => 30), '->matchesUrl() extracts parameters from the file name');
 
-    $parameters = $route->matchesUrl('/imagene/logo-goyello-160x80(w:20)(h:30)(s:0)(i:1).png', array('sf_method' => 'GET'));
-    $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'width' => 20, 'height' => 30, 'scale' => false, 'inflate' => true), '->matchesUrl() extracts all parameters from the file name');
+    $parameters = $route->matchesUrl('/imagene/logo-goyello-160x80(p:logos,companies)(w:20)(h:30)(s:0)(i:1).png', array('sf_method' => 'GET'));
+    $this->cmp_ok($parameters, '===', array('file_name' => 'logo-goyello-160x80.png', 'path' => 'logos' . DIRECTORY_SEPARATOR . 'companies', 'width' => 20, 'height' => 30, 'scale' => false, 'inflate' => true), '->matchesUrl() extracts all parameters from the file name');
   }
 
   public function testMatchesUrlThrowsExceptionForInvalidFormatter()
