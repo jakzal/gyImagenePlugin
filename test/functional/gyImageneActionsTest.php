@@ -291,6 +291,11 @@ class gyImageneActionsTest extends gyTestFunctionalImagene
    */
   protected function removeAllFilesFromDirectory($dirPath)
   {
+    if (!is_dir($dirPath))
+    {
+      return;
+    }
+
     $dir = opendir($dirPath);
 
     while (false !== ($file = readdir($dir))) 
