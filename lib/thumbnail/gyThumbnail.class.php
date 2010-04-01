@@ -71,7 +71,7 @@ class gyThumbnail
    */
   public function loadFile($image)
   {
-    if (eregi('http(s)?://', $image))
+    if (preg_match('#^http(s)?://#', $image))
     {
       if (class_exists('sfWebBrowser'))
       {
